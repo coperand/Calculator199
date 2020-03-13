@@ -15,6 +15,7 @@ namespace Calculator199
     public struct Note
     {
         public string left, right;
+        public int hooks;
     }
 
     public class RecentLab

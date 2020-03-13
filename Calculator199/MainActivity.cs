@@ -35,6 +35,7 @@ namespace Calculator199
             {
                 text.Text = Intent.GetStringExtra("exp");
                 text.SetSelection(text.Text.Length);
+                hooks = Intent.GetIntExtra("hooks", 0);
             }
 
             recent = FindViewById<Button>(Resource.Id.button_recent);
@@ -336,7 +337,7 @@ namespace Calculator199
                             {
                                 lab.list.RemoveAt(0);
                             }
-                            lab.list.Add(new Note { left = text.Text, right = result });
+                            lab.list.Add(new Note { left = text.Text, right = result, hooks = this.hooks });
                         }
 
                         text.Text = result;
@@ -352,7 +353,7 @@ namespace Calculator199
             string result = "";
             for (int i = 0; i < exp.Length; i++)
             {
-                if (exp[i] == '-') result += '+';
+                if (exp[i] == '-' && i != 0 && exp[i - 1] != '-') result += '+';
                 else if (exp[i] == '+') result += '-';
                 else result += exp[i];
             }
@@ -426,7 +427,7 @@ namespace Calculator199
                     if (index != 0 && exp[index - 1] != '+' && exp[index - 1] != '-' && exp[index - 1] != '*'
                         && exp[index - 1] != '/' && exp[index - 1] != '^' && exp[d.Key - 1] != '(' && exp[d.Key - 1] != 'E')
                     {
-                        return Calculate(exp.Substring(0, index)) - Calculate(ChangeSigns(exp.Substring(index + 1, exp.Length - index - 1)));
+                        return Calculate(exp.Substring(0, index)) - Calculate((index != exp.Length - 1 && exp[index + 1] == '-') ? exp.Substring(index + 1, exp.Length - index - 1) : ChangeSigns(exp.Substring(index + 1, exp.Length - index - 1)));
                     }
                 }
                 foreach (var d in symbols.Where(s => s.Value == '*'))

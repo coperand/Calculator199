@@ -50,6 +50,7 @@ namespace Calculator199
                     Intent intent = new Intent(itemView.Context, typeof(MainActivity));
                     intent.AddFlags(ActivityFlags.ClearTop);
                     intent.PutExtra("exp", note.left);
+                    intent.PutExtra("hooks", note.hooks);
                     itemView.Context.StartActivity(intent);
                 };
                 text = itemView.FindViewById<TextView>(Resource.Id.item_text_view);
